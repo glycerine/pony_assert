@@ -3,16 +3,26 @@ pony_assert: C FFI to the rescue of pony testers
 
 # The problem 
 
-pony programs cannot crash at runtime by construction.
+pony programs cannot crash at runtime by construction
+(so long as they don't allocate too much memory).
 
-If they stay inside pony code and never call out
-to the C FFI, they are guarateed to never crash by design.
+So if your program stays inside pony code and never calls out
+to the C FFI, it can only crash if it runs out of memory.
 
-But what if we are testing or doing feather-weight testing via assertions?
+For production this is great. 
+
+But... what if we are testing? What if we are doing 
+feather-weight testing via assertions? These
+are critical software engineering practices.
+
+For testing, pony's lack of built in ability to
+halt processing is inappropriate.
+
+That is, we want a _fail-stop model_ in most testing situations.
 
 If an assertion is violated, we _want_ to crash 
 the program immediately, so we are are informed 
-that we have found a bug! Not in 10 minutes, not
+that we have found a bug in our logic! Not in 10 minutes, not
 "eventually" at some point in the future 
 (what the standard library `pony_test` does). 
 
