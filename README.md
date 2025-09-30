@@ -10,9 +10,13 @@ to the C FFI, they are guarateed to never crash by design.
 
 But what if we are testing or doing feather-weight testing via assertions?
 
-If an assertion is violated, we want to crash 
+If an assertion is violated, we _want_ to crash 
 the program immediately, so we are are informed 
-that we have found a bug!
+that we have found a bug! Not in 10 minutes, not
+"eventually" at some point in the future 
+(what the standard library `pony_test` does). 
+
+We want to crash _now_!
 
 What can we do?
 
