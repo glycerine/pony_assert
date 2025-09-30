@@ -34,9 +34,21 @@ primitive Assert
       @exit(1)
 
   fun apply(mustHold:Bool, invariantText:String, loc: SourceLoc = __loc) =>
-    invar(mustHold, invariantText, loc)
+    """
+    Assert.apply asserts an invariant by allowing the caller to supply
+    an expression that evaluates to a Bool, mustHold.
+    Assert.apply crashes and reports a violated invariant if mustHold is false.
+    Assert.apply() is morally equivalent to Assert.invar().
+    """
+    if mustHold then
+      return
+    end
+    crash("error: Assert.apply invariant '" + invariantText + "' violated!", loc)
 
   fun invar(mustHold:Bool, invariantText:String, loc: SourceLoc = __loc) =>
+    """
+      Assert.invar crashes if mustHold is false. equivalent to Assert.apply().
+    """
     if mustHold then
       return
     end
@@ -47,9 +59,9 @@ primitive Assert
       crash("error: Assert.equal violated! want: " + want.string() + ", but got: " + got.string() + "; "+inv, loc)
     end 
 
-  fun equalbox[T: (Equatable[T] box & Stringable box)](got:T, want:T, loc: SourceLoc = __loc) =>
+  fun equalbox[T: (Equatable[T] box & Stringable box)](got:T, want:T, inv:String = "", loc: SourceLoc = __loc) =>
     if got != want then
-      crash("error: Assert.equal violated! want: " + want.string() + ", but got: " + got.string(), loc)
+      crash("error: Assert.equalbox violated! want: " + want.string() + ", but got: " + got.string() + "; "+inv, loc)
     end 
     
   fun lte[T: (Comparable[T] #read & Stringable #read)](a:T, b:T, inv:String, loc: SourceLoc = __loc) =>
