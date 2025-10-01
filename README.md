@@ -34,7 +34,7 @@ What can we do?
 
 assert.pony is a lightweight assertion 
 facility for testing Pony code that 
-uses to the C FFI to immediately
+uses the C FFI to immediately
 crash your program if an asserted invariant
 is violated.
 
